@@ -29,9 +29,9 @@ async function query(filterBy) {
         let query = collection.find(criteria)
 
         // Add sort option if it exists in filterBy
-        if (filterBy.sortBy === 'Best Price') {
+        if (filterBy.sortBy === 'Best price') {
             query = query.sort({ price: 1 })
-        } else if (filterBy.sortBy === 'DeliveryTime') {
+        } else if (filterBy.sortBy === 'Delivery Time') {
             query = query.sort({ daysToMake: 1 })
         }
 
@@ -216,7 +216,8 @@ function _buildCriteria(filterBy = { title: '', category: null, DeliveryTime: ''
 
     // If a category is provided, add an elemMatch query for each category
     if (category) {
-        criteria.category = { $elemMatch: { tags: { $in: category } } }
+        // criteria.category = { $elemMatch: { tags: { $in: category } } }
+        criteria.tags = { $in: [category] };
     }
 
     // If a budget range is provided, add a query for it
@@ -228,15 +229,8 @@ function _buildCriteria(filterBy = { title: '', category: null, DeliveryTime: ''
 
     // If a delivery time is provided, add an exact match query for it
     if (DeliveryTime) {
-        criteria.DeliveryTime = { $lte: Number(daysToMake) }
-    }
 
-    // If sorting by price is requested, add sorting rule to criteria
-    if (sortBy === 'Best price') {
-        criteria.sort = { price: 1 } // 1 for ascending, -1 for descending
-    }
-    if (sortBy === 'Delivery Time') {
-        criteria.sort = { daysToMake: 1 } // 1 for ascending, -1 for descending
+        criteria.daysToMake = { $lte: Number(DeliveryTime) }
     }
 
     return criteria
