@@ -3,22 +3,6 @@ const logger = require('../../services/logger.service')
 const utilService = require('../../services/util.service')
 const ObjectId = require('mongodb').ObjectId
 
-// async function query(filterBy) {
-//     console.log(' filter from service query :', filterBy)
-//     try {
-//         const criteria = _buildCriteria(filterBy)
-
-//         console.log('criteria ', criteria)
-//         const collection = await dbService.getCollection('gig')
-//         var gigs = await collection.find(criteria).toArray()
-//         return gigs
-//     } catch (err) {
-//         logger.error('cannot find gigs', err)
-//         throw err
-//     }
-// }
-
-
 
 async function query(filterBy) {
     console.log(' filter from service query :', filterBy)
@@ -35,7 +19,7 @@ async function query(filterBy) {
             query = query.sort({ daysToMake: 1 })
         }
 
-        const gigs = await query.toArray()
+        const gigs = await query.toArray()  
         return gigs
     } catch (err) {
         logger.error('cannot find gigs', err)
@@ -127,81 +111,6 @@ module.exports = {
     addGigMsg,
     removeGigMsg
 }
-
-// function _buildCriteria(filterBy = { title: '', category: null, budget: { min: '', max: '' }, DeliveryTime: '' }) {
-//     const { title, category, budget, DeliveryTime } = filterBy
-
-//     const criteria = {}
-
-//     if (title) {
-//         criteria.title = { $regex: title, $options: 'i' }
-//     }
-
-//     if (category && category.length > 0) {
-//         const categoryCrit = category.map(category => ({
-//             category: { $elemMatch: { title: category } },
-//         }))
-
-//         criteria.$and = category
-//     }
-
-
-
-//     return criteria
-// }
-
-// function _buildCriteria(filterBy = { title: '', category: null, DeliveryTime: '', min: '', max: '' }) {
-//     const { title, category, min, max, DeliveryTime } = filterBy
-
-//     const criteria = {}
-
-//     // If a title is provided, add a regex search for it
-//     if (title) {
-//         criteria.title = { $regex: title, $options: 'i' }
-//     }
-
-//     // If a category is provided, add an elemMatch query for each category
-//     // if (category && category.length > 0) {
-//     //     const categoryCrit = category.map(cat => ({
-//     //         category: { $elemMatch: { title: cat } },
-//     //     }))
-//     //     criteria.$and = categoryCrit
-//     // }
-
-//     // if (category) {
-
-//     //     console.log('caegory filter ', category)
-
-//     //     criteria.category = { $elemMatch: { tags: { $in: tags } } }
-//     // }
-
-
-//     if (category) {
-//         criteria.category = { $elemMatch: { title: category } }
-//     }
-//     // If a budget range is provided, add a query for it
-//     if (min && max) {
-//         criteria.price = {}
-//         if (min) criteria.price.$gte = Number(min)
-//         if (max) criteria.price.$lte = Number(max)
-//     }
-
-//     // If a delivery time is provided, add an exact match query for it
-//     if (DeliveryTime) {
-//         criteria.DeliveryTime = { $lte: Number(DeliveryTime) }
-//     }
-
-//     return criteria
-// }
-
-
-// if (labels && labels.length > 0) {
-//     const labelsCrit = labels.map(label => ({
-//         labels: { $elemMatch: { title: label } },
-//     }))
-
-//     criteria.$and = labelsCrit
-// }
 
 
 function _buildCriteria(filterBy = { title: '', category: null, DeliveryTime: '', min: '', max: '', sortBy: '' }) {

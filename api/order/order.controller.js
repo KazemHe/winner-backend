@@ -36,7 +36,12 @@ async function addOrder(req, res) {
     const order = req.body
     const addedOrder = await orderService.add(order)
     res.json(addedOrder)
-    
+    socketService.emitToUser({
+      type: 'new-order-seller',
+      data: addedOrder,
+      userId: addedOrder.seller._id,
+    })
+
   } catch (err) {
     logger.error('Failed to add order', err)
     res.status(500).send({ err: 'Failed to add order' })
@@ -50,8 +55,8 @@ async function updateOrder(req, res) {
     const updatedOrder = await orderService.update(order)
     res.json(updatedOrder)
 
-    socketService.emitToUser({type: 'order-changed-status', data: order, userId: order.buyer._id})
-    
+    socketService.emitToUser({ type: 'order-changed-status', data: order, userId: order.buyer._id })
+
   } catch (err) {
     logger.error('Failed to update order', err)
     res.status(500).send({ err: 'Failed to update order' })
