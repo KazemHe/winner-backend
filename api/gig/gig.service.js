@@ -13,13 +13,18 @@ async function query(filterBy) {
         let query = collection.find(criteria)
 
         // Add sort option if it exists in filterBy
-        if (filterBy.sortBy === 'Best price') {
-            query = query.sort({ price: 1 })
-        } else if (filterBy.sortBy === 'Delivery Time') {
+
+        if (filterBy.sortBy === 'Delivery Time') {
             query = query.sort({ daysToMake: 1 })
         }
+        else if (filterBy.sortBy === 'Highest Rating') {
+            query = query.sort({ 'owner.rate': -1 })
+        }
+        else if (filterBy.sortBy === 'Best price') {
+            query = query.sort({ price: 1 })
+        }
 
-        const gigs = await query.toArray()  
+        const gigs = await query.toArray()
         return gigs
     } catch (err) {
         logger.error('cannot find gigs', err)
