@@ -108,7 +108,7 @@ function setupSocketAPI(http) {
       if (toSocket)
         toSocket.emit(
           'user-ordered-gig',
-          `Hey ${order.seller.username}! \nA user has just ordered one of your gigs right now.`
+          `Hey ! \nA user has just ordered one of your gigs right now.`
         )
       return
     })
